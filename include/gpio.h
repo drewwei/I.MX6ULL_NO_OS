@@ -3,6 +3,6 @@
 #include "imx6ull.h"    
 
 
-extern int GPIO_Set_Pin(GPIO_Group_t *GPIOx, int GPIO_num , unsigned int dir, unsigned int data);
+extern int GPIO_Set_Pin(GPIO_Group_t *GPIOx, int pin , unsigned int dir, unsigned int data);
 
 #endif

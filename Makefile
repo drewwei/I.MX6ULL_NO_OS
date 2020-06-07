@@ -7,7 +7,7 @@ OBJDUMP = arm-linux-gnueabihf-objdump
 CFLAGS := -Wall -O2 -g -nostdlib
 INCLUDES = -I ./include
 
-objs := start.o main.o led.o gpio.o clock_init.o uart.o gic.o
+objs := start.o main.o led.o gpio.o clock_init.o uart.o gic.o eabi_compat.o
 
 TARGET :=led
 

@@ -40,6 +40,7 @@ static void PERCLK_CLK_ROOT_init(void)
     CCM_CBCMR1 &= ~(0x7f<<0); /* 1.derive clock from ipg clk root; 2.divide by 1 PERCLK_CLK_ROOT=IPG_CLK_ROOT=66MHz */
 
 }
+
 /* 初始化PLL3 PFD0-PFD3 */
 static void PLL3_PFD_init(void)
 {
@@ -54,7 +55,7 @@ static void PLL3_PFD_init(void)
     CCM_ANALOG_PFD_480 = reg;
 }
 /* 设置uart时钟树 */
-static UART_CLK_ROOT_init(void)
+static void UART_CLK_ROOT_init(void)
 {
     CCM_CSCDR1 &= ~(1<<6);  /* 0 derive clock from pll3_80m */
     CCM_CSCDR1 &= ~(0x3F);  /* Divider for  uart clock podf: 000000 divide by 1 */
