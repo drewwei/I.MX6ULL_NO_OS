@@ -5,6 +5,7 @@ SECTIONS{
     .text : 
     {
         start.o(.text) 
+        main.o(.text)
         *(.text)
     }
 

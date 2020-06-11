@@ -3,21 +3,21 @@ LD = arm-linux-gnueabihf-ld
 AR = arm-linux-gnueabihf-ar
 OBJCOPY = arm-linux-gnueabihf-objcopy
 OBJDUMP = arm-linux-gnueabihf-objdump
+CFLAGS =  -Wall -O2 -g -nostdlib -fno-builtin
+INCLUDES = -I ./include -nostdinc
+LDFLAGS	= -lgcc -L /home/drew/work/100ask_imx6ull-sdk/ToolChain/gcc-linaro-6.2.1-2016.11-x86_64_arm-linux-gnueabihf/lib/gcc/arm-linux-gnueabihf/6.2.1
 
-CFLAGS := -Wall -O2 -g -nostdlib
-INCLUDES = -I ./include
+objs := start.o main.o led.o gpio.o clock_init.o uart.o gic.o key_interrupt.o i2c.o my_printf.o string_utils.o
 
-objs := start.o main.o led.o gpio.o clock_init.o uart.o gic.o eabi_compat.o
+TARGET := led
 
-TARGET :=led
-
-${TARGET}:${objs}
-	${LD} -T imx6ull.lds -o $@_elf $^ 
-	${OBJCOPY} -O binary -S $@_elf $@.bin
-	${OBJDUMP} -D -m arm $@_elf > $@.dis
-	./tools/mkimage -n ./tools/imximage.cfg.cfgtmp -T imximage -e 0x80100000 -d $@.bin $@.imx
+${TARGET}.elf:${objs}
+	${LD} -T imx6ull.lds -g -o $@ $^ ${LDFLAGS}
+	${OBJCOPY} -O binary -S $@ ${TARGET}.bin
+	${OBJDUMP} -D -m arm $@ > ${TARGET}.dis
+	./tools/mkimage -n ./tools/imximage.cfg.cfgtmp -T imximage -e 0x80100000 -d ${TARGET}.bin ${TARGET}.imx
 	dd if=/dev/zero of=1k.bin bs=1024 count=1
-	cat 1k.bin $@.imx > $@.img
+	cat 1k.bin ${TARGET}.imx > ${TARGET}.img
 
 %.o:%.c
 	${CC} ${CFLAGS} ${INCLUDES} -c -o $@ $<	
@@ -26,4 +26,6 @@ ${TARGET}:${objs}
 	${CC} ${CFLAGS} ${INCLUDES} -c -o $@ $<
 
 clean:
-	rm -f ${TARGET}.bin ${TARGET}_elf ${TARGET}.dis ${TARGET}.img *.o ${TARGET}.imx
+	rm -f *.bin *.elf *.dis *.img *.o *.imx
+
+

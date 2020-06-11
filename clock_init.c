@@ -19,7 +19,7 @@ static void PLL2_PFD_init(void)
     reg |= (16<<8); /* PDF1 = 594MHz */
     reg |= (24<<16);/* PDF2 = 396MHz */
     reg |= (48<<24);/* PDF3 = 198MHz */
-    CCM_ANALOG_PFD_528 = reg;
+    CCM_ANALOG_PFD_528 |= reg;
 }
 /* 初始化AHB_CLK_ROOT */
 static void AHB_CLK_ROOT_init(void)
@@ -52,7 +52,7 @@ static void PLL3_PFD_init(void)
     reg |= (16<<8); /* PDF1 = 540MHz */
     reg |= (17<<16);/* PDF2 = 396MHz */
     reg |= (19<<24);/* PDF3 = 198MHz */
-    CCM_ANALOG_PFD_480 = reg;
+    CCM_ANALOG_PFD_480 |= reg;
 }
 /* 设置uart时钟树 */
 static void UART_CLK_ROOT_init(void)

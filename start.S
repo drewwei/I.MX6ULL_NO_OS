@@ -2,7 +2,7 @@
 .global     _start
 _start:
 _vector_table:    @设置异常向量表
-    b Reset_Handler  /* 用b 跳转，是为了防止DDR还未初始化，就使用连接地址,但DDR已经被NXP在启动ROM里面初始化了 */
+    b Reset_Handler  /* 用b 跳转，是为了防止DDR还未初始化就使用连接地址,这里DDR已经被NXP在启动ROM里面初始化了 */
 Undefined_Handler:
     ldr pc, =Undefined_Handler
 SVC_Handler:
@@ -81,7 +81,7 @@ enable_clock:
 1:
     str r1, [r0], #4
     cmp r0, r2
-    bne    1b 
+    ble    1b 
     mov pc, lr
 
 .global Handle_IRQ_c
