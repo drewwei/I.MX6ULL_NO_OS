@@ -1,3 +1,6 @@
+/* 该文件下源代码是i2c控制器驱动源码
+ * I.MX6ULL有好几个I2C控制器，通过不同传参可以用同一套代码实现i2c控制器的读写
+ */
 #include "fsl_iomuxc.h"
 #include "i2c.h"
 #include "my_printf.h"
@@ -111,7 +114,7 @@ unsigned int i2c_write(I2C_Type * base, i2c_transfer_t * msg)
         }
     }
 
-    ret = i2c_stop(base);
+    i2c_stop(base);
     return ret;
 }
 
@@ -139,7 +142,7 @@ unsigned int i2c_read(I2C_Type * base, i2c_transfer_t * msg)
 
         while((base->I2SR & (1 << 1)) == 0) {};    /* 等待传输完成，中断置位 */ 
 
-        printf("1...\r\n");
+        //printf("1...\r\n");
 
         base->I2SR &= ~(1 << 1);         /* 清中断标志位 */
 
@@ -163,11 +166,11 @@ unsigned int i2c_read(I2C_Type * base, i2c_transfer_t * msg)
  */
     dummy = base->I2DR;  /* 读一次，假读 */ 
 
-    printf("2...\r\n");
+    //printf("2...\r\n");
     do{
         msg->len--;
         while(!(base->I2SR & (1 << 1))) {};    /* 等待传输完成，中断置位 */ 
-        printf("3...\r\n");
+        //printf("3...\r\n");
         base->I2SR &= ~(1 << 1);         /* 清中断标志位 */
         if(msg->len == 0)
         {
@@ -181,7 +184,7 @@ unsigned int i2c_read(I2C_Type * base, i2c_transfer_t * msg)
         *msg->data++ = base->I2DR;
 
     }while(msg->len);
-
+    //printf("4...\r\n");
     return IIC_OK;
 }
 
@@ -249,7 +252,7 @@ unsigned int i2c_transfer(I2C_Type * base, i2c_transfer_t * msg)
 }
 
 
-unsigned int i2c_write_oneByte(I2C_Type * base, unsigned char slavAddr, unsigned int reg, unsigned int reglen, unsigned char data)
+unsigned int i2c_write_oneByte(I2C_Type * base, unsigned char slavAddr, unsigned int reg, unsigned char data)
 {  
     unsigned int ret;
     unsigned char oneByte = data;
@@ -259,12 +262,12 @@ unsigned int i2c_write_oneByte(I2C_Type * base, unsigned char slavAddr, unsigned
     msg.len  = 1;
     msg.regAddr  = reg;
     msg.slavAddr = slavAddr;
-    msg.regLen   = reglen;      /* 漏了这句导致了大问题 */
+    msg.regLen   = 1;      /* 漏了这句导致了大问题 */
     ret = i2c_transfer(base, &msg);
     return ret;
 }
 
-unsigned int i2c_read_oneByte(I2C_Type * base, unsigned char slavAddr, unsigned int reg, unsigned int reglen, unsigned char *data)
+unsigned int i2c_read_oneByte(I2C_Type * base, unsigned char slavAddr, unsigned int reg, unsigned char *data)
 {
     unsigned int ret;
     i2c_transfer_t msg;
@@ -273,7 +276,7 @@ unsigned int i2c_read_oneByte(I2C_Type * base, unsigned char slavAddr, unsigned 
     msg.len  = 1;
     msg.regAddr  = reg;
     msg.slavAddr = slavAddr;
-    msg.regLen   = reglen;
+    msg.regLen   = 1;
 
     ret = i2c_transfer(base, &msg);
     return ret;

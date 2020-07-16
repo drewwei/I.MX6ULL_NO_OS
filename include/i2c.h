@@ -28,7 +28,7 @@ typedef struct _i2c_transfer{
 #define IIC_TIMEOUT              (1<<4)
 
 
-unsigned int i2c_write_oneByte(I2C_Type * base, unsigned char slavAddr, unsigned int reg, unsigned int reglen, unsigned char data);
-unsigned int i2c_read_oneByte(I2C_Type * base, unsigned char slavAddr, unsigned int reg, unsigned int reglen, unsigned char *data);
+unsigned int i2c_write_oneByte(I2C_Type * base, unsigned char slavAddr, unsigned int reg, unsigned char data);
+unsigned int i2c_read_oneByte(I2C_Type * base, unsigned char slavAddr, unsigned int reg, unsigned char *data);
 
 #endif // ! _I2C_H

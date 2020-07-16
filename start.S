@@ -44,7 +44,7 @@ Reset_Handler:
     ldr sp, =0x80400000     @设置IRQ模式的栈
 
     cps #0x13               /* 进入管理模式 */
-    ldr sp, =0x80200000     @设置SVC模式的栈
+    ldr sp, =0x80300000     @设置SVC模式的栈
     //bl  test_led
     bl  clean_bss           @清BSS段
     bl  main                @跳入C函数

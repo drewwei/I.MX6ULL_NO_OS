@@ -7,9 +7,9 @@ CFLAGS =  -Wall -O2 -g -nostdlib -fno-builtin
 INCLUDES = -I ./include -nostdinc
 LDFLAGS	= -lgcc -L /home/drew/work/100ask_imx6ull-sdk/ToolChain/gcc-linaro-6.2.1-2016.11-x86_64_arm-linux-gnueabihf/lib/gcc/arm-linux-gnueabihf/6.2.1
 
-objs := start.o main.o led.o gpio.o clock_init.o uart.o gic.o key_interrupt.o i2c.o my_printf.o string_utils.o
+objs := start.o main.o led.o gpio.o clock_init.o uart.o gic.o key_interrupt.o i2c.o my_printf.o string_utils.o ap3216c.o
 
-TARGET := led
+TARGET := spi
 
 ${TARGET}.elf:${objs}
 	${LD} -T imx6ull.lds -g -o $@ $^ ${LDFLAGS}
